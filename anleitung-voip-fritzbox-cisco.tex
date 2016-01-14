@@ -1,14 +1,4 @@
 \documentclass[a4paper,12pt]{scrbook} 
-%%\documentclass[a4paper,12pt]{scrreprt} 
-%%\documentclass[a4paper,12pt]{scrartcl} 
-
-
-%Postanschrift Peter:
-%
-% Fujitsu Technology Solutions GmbH
-% Herr Colban
-% Wohlrabedamm 32
-% 13629 Berlin
 
 %%apt-get install texlive-lang-german kile kile-l10n  aspell-de%%damit ngerman keine Probleme mehr macht !!
 \usepackage[utf8]{inputenc} 
@@ -108,7 +98,7 @@
 \begin{titlepage}
 
 \begin{center}
-{\huge\bfseries VoIP-Setup: FritzBox 7240 am Telekom AllIP-DSL mit Cisco 7960/7961/7962 Systemtelefonen verheiraten\par}
+{\huge\bfseries VoIP-Setup: FritzBox 7240 am Telekom AllIP-DSL mit Cisco 7960 und 7961 Systemtelefonen verheiraten\par}
 \vskip 1cm
 \textbf{Beispielkonfiguration}
 
@@ -130,8 +120,10 @@ brauchen locker mal eine halbe Stunde, wenn man die SIP-Firmware updatet.
 \vskip 3cm
 \flushleft
 \begin{tabular}{rl}
-Von: & marcel\\ 
+Autor: & marcel\\ 
+Version: & v0.1\\
 Am: & \today\\
+HINWEIS: &Fast alles in dieser Anleitung stammt aus dem Netz, ich hab es nur so\\ &zusammengefummelt, das es für mich funktioniert.\\
 \end{tabular}
 \end{titlepage}
 
@@ -253,7 +245,7 @@ Die eingesetzte Hardware untergliedert sich in drei Kathegorien und setzt sich w
   \item 1x Siemens S685IP VoIP-DECT Basisstation
   \item 1x Cisco 7960 Systemtelefon mit SIP-Firmware
   \item 4x Cisco 7961 Systemtelefon mit SIP-Firmware
-  \item 2x Cisco 7962 Systemtelefon mit SIP-Firmware
+  \item 2x Cisco 7962 Systemtelefon mit SIP-Firmware (warte da derzeit noch auf die Warenlieferung)
  \end{itemize}
 \end{itemize}
 
@@ -329,17 +321,45 @@ Am VoIP-Server, also der FritzBox gibt es nun zwei Bereiche die man abarbeiten m
 die man von seinem Anbieter zur Verfügung gestellt bekommen hat. In meinem Fall handelt es sich um 3 SIP-Nummern an einem AllIP-Anschluss der Telekom.
 Der zweite Bereich ist die Konfiguration der FritzBox als SIP-Server für die internen SIP-Telefone.
 
+
 Netter Nebeneffekt wenn man die FritzBox als VoIP-Server verwendet: falls man ein GMail-Konto hat, kann man seine Kontakte vom GMail-Konto direkt in die FritzBox importieren.
 \subsection{Externe SIP-Accounts}
 Hier hat man mit der FritzBox und dem mitgelieferten Assistenten wirklich leichtes Spiel. Man klickt sich durch den Telefonieassistenten, indem man seinen 
-VoIP-Anbieter auswählt und noch die passenden Zugangsdaten einträgt. Danach sollte die FritzBox die SIP-Nummern porblemlos registrieren können. 
+VoIP-Anbieter auswählt und noch die passenden Zugangsdaten einträgt. Danach sollte die FritzBox die SIP-Nummern porblemlos registrieren können. Wenn alles geklappt hat,
+sollte das bei euch in der Art aussehen:
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=1\hsize]{./images/voip-server-fritzbox-extsip.png}
+\end{center}
+\caption[Konfiguration externen SIP-Accounts, hier am Beispiel Telekom AllIP.]
+{\label{voip-server-fritzbox-extsip}Konfiguration externen SIP-Accounts, hier am Beispiel Telekom AllIP. Quelle:Autor}
+\end{figure}
 
 \subsection{Interne SIP-Accounts}
 Nun müssen wir noch für jedes interne Telefon einen SIP-Account anlegen. Das ist ebenso einfach wie im vorherigen Schritt. Man fügt in der Weboberfläche 
-der FritzBox neue Telefoniegeräte hinzu. Diese bekommen die Nummern 610 und aufstreigend zugewiesen. Als Passwort empfiehlt sich für die Testphase etwas 
+der FritzBox neue Telefoniegeräte hinzu. Diese bekommen standardmäßig die Nummern 610 und aufsteigend zugewiesen. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=1\hsize]{./images/voip-server-fritzbox-telefoniegeraete.png}
+\end{center}
+\caption[Konfiguration von SIP-Accounts für die internen Telefone.]
+{\label{voip-server-fritzbox-intsip}Konfiguration von SIP-Accounts für die internen Telefone. Quelle:Autor}
+\end{figure}
+
+Als Passwort empfiehlt sich für die Testphase etwas 
 unkompliziertes wie 1234 zu wählen, da einige ältere Telefone sich unter Umständen nicht an der FritzBox anmelden können, falls das Passwort zu komplex ist.
 Solche Probleme sind dann nur sehr schwer zu diagnostizieren. Im letzten Schritt, wenn alles so läuft wie gewünscht, sollte man natürlich sämtliche Passwörter
 durch sichere Passwörter ersetzen.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=1\hsize]{./images/voip-server-fritzbox-status.png}
+\end{center}
+\caption[FritzBox 7240 Konfiguration abgeschlossen und alle Nummern registriert.]
+{\label{voip-server-fritzbox-status}FritzBox 7240 Konfiguration abgeschlossen und alle Nummern registriert. Quelle:Autor}
+\end{figure}
 
 
 \section{VoIP-Clients}
@@ -349,14 +369,13 @@ IP im DHCP-Server. So kann man die Geräte auch per DHCP konfigurieren lassen un
 
 \subsection{LG Nexus 5}
 Google's Betriebssystem Android bringt seit Version 4.2 einen nativen SIP-Client mit. Dieser eignet sich gut für erste Tests. Das zugehörige Optionsmenü ist jedoch sehr versteckt.
-Man geht über die Telefon-App $\rightarrow$ Einstellungen $\rightarrow$ Anrufe $\rightarrow$ Anrufkonten $\rightarrow$ SIP-Konten. Um per SIP auch Anrufe empfangen zu können muss
-das WLAN häufig genutzt werden, was sehr zu Lasten des Akkus geht.
+Man geht über die Telefon-App $\rightarrow$ Einstellungen $\rightarrow$ Anrufe $\rightarrow$ Anrufkonten $\rightarrow$ SIP-Konten.
 
 Nun fügt man einen neuen SIP-Account hinzu:
 \begin{itemize}
- \item Nutzername: <interne Rufnummer die man in der FritzBox für diesen Account gewählt hat> zB 620
- \item Passwort: <zugehöriges Passwort> zB 1234
- \item: Server: <lokale IP der FritzBox> zB 192.168.1.80
+ \item Nutzername: 620
+ \item Passwort: 1234
+ \item Server: 192.168.1.80
 \end{itemize}
 
 \begin{figure}[H]
@@ -370,13 +389,13 @@ Nun fügt man einen neuen SIP-Account hinzu:
 
 
 Nun sollte sich das Telefon an der FritzBox anmelden können und ein- und ausgehende Gespräche möglich sein.
+Um per SIP auch Anrufe empfangen zu können muss das WLAN häufig genutzt werden, was sehr zu Lasten des Akkus geht.
 
 \subsection{Siemens S685IP}
 Die Konfiguration der DECT-Basis erfolgt analog zum Nexus 5. indem man 
 
 \begin{figure}[H]
 \begin{center}
-%\includegraphics[width=.5\hsize]{./images/informationweek-virtualizationbycathegory.png}
 \includegraphics[width=.8\hsize]{./images/voip-client-s685ip-01.png}
 \end{center}
 \caption[Konfiguration eines SIP-Accounts in der DECT-Basis Siemens S685IP]
@@ -479,13 +498,13 @@ Die beiden noch fehlenden Dateien für dieses Telefon heißen somit:
 \end{itemize}
 und haben folgenden Inhalt:
 
-\begin{lstlisting}[caption={SEP0012345678AB.cnf.xml},label=lst:7960sep0012345678abcnfxml]
+\begin{lstlisting}[caption={SEP\textbf{0012345678AB}.cnf.xml},label=lst:7960sep0012345678abcnfxml]
 <device>
 <loadInformation model="IP Phone 7960">P0S3-8-12-00</loadInformation>
 </device>
 \end{lstlisting}
 
-\begin{lstlisting}[caption={SIP0012345678AB.cnf},label=lst:7960sip0012345678abcnf]
+\begin{lstlisting}[caption={SIP\textbf{0012345678AB}.cnf},label=lst:7960sip0012345678abcnf]
 image_version: P0S3-8-12-00
 line1_name: 622
 line1_authname: "622"
@@ -515,7 +534,7 @@ Nun sollten sich in dem Verzeichnis die folgenden Dateien befinden:
 \end{itemize}
 Wenn alles klappt sollte sich das Telefon nach dem Update in einer Minimalkonfiguration befinden, also sich an der FritzBox anmelden und ein- und ausgehende Gespräche möglich sein.
 
-\subsubsection{Konfigurationsdateien per TFTP auf das Cisco 7960 übertragen}
+\subsubsection{Konfigurationsdateien und TFTP-Server für Cisco 7960 vorbereiten}
 Um die Dateien aus dem vorherigen Kaptiel auf das Telefon zu bekommen, muss man einen TFTP-Server installieren. 
 Ich habe hier einen Ubuntu-Server verwendet auf dem ich den atftp installiert habe:
 
@@ -616,26 +635,317 @@ verwendet werden. Sollte irgendwas schief gehen bitte folgende Sachen überprüf
 
 
 \subsection{Cisco 7961}
-Die Konfiguration für das Cisco 7961 ist im prinzip sehr ähnlich. Die meisten Konfigurationsdateien liegen jetzt jedoch nur noch im XML-Format vor.
-Eine ausführliche Beschreibung folgt demnächst. Stay tuned ;)
+Die Konfiguration für das Cisco 7961 ist im prinzip sehr ähnlich. Wir gehen wieder in zwei Schritten vor. Erstens erstellen wir die individuellen Konfigurationsdateien für unser 
+Beispieltelefon Cisco 7961 mit der beispielhaften MAC-Adresse 00:12:34:56:78:de. Im zweiten Schritt bemühen wir dann wieder die Webseite von Cisco um an die aktuelleste SIP-Firmware für unser
+Cisco 7961 zu kommen.
 
-Als Vorgeschmach: In meinem Produktivsystem habe ich im Moment ein 7960 im Betrieb und vier 7961. Bei mir sieht der TFTP-Ordner jetzt so aus:
-(Die symbolischen Links mit den Bezeichnern wie jagdzimmer etc. habe ich nur zu meiner Orientierung angelegt, sonst haben die keine Funktion.)
-\begin{figure}[H]
-\begin{center}
-%\includegraphics[width=.5\hsize]{./images/informationweek-virtualizationbycathegory.png}
-\includegraphics[width=1\hsize]{./images/atftpd-cisco7960-7961.png}
-\end{center}
-\caption[TFTP-Verzeichnis zu gleichzeitigen Nutzung von 7960 und 4x 7961 Telefonen.]
-{\label{tftp79607961}TFTP-Verzeichnis zu gleichzeitigen Nutzung von 7960 und 4x 7961 Telefonen. Quelle:Autor}
-\end{figure}
+\subsubsection{Konfigurationsdateien für das Cisco 7961 erstellen}
+Die aktuellste SIP-Firmware für das Cisco 7961 ist im Moment in der Datei cmterm-7941\_7961-sip.9-4-2SR1-1.zip\footnote{\url{https://software.cisco.com/download/release.html?mdfid=279251499\&flowid=46206\&softwareid=282074288\&release=9.4(2)SR1\&relind=AVAILABLE\&rellifecycle=\&reltype=latest}} enthalten. Nach dem entpacken sehen wir folgende Dateien:
 
+\begin{itemize}
+ \item apps41.9-4-2ES9.sbn  
+ \item cnu41.9-4-2ES9.sbn
+ \item cvm41sip.9-4-2ES9.sbn
+ \item dsp41.9-4-2ES9.sbn
+ \item jar41sip.9-4-2ES9.sbn
+ \item SIP41.9-4-2SR1-1S.loads
+ \item term41.default.loads
+ \item term61.default.loads
+\end{itemize}
+
+Zusätzlich legen wir jetzt noch die folgenden Dateien an:
+\lstset{
+	language=BASH,
+	keywordstyle=\bfseries\ttfamily\color[rgb]{0,0,1},
+	identifierstyle=\ttfamily,
+	commentstyle=\color[rgb]{0.133,0.545,0.133},
+	stringstyle=\ttfamily\color[rgb]{0.627,0.126,0.941},
+	showstringspaces=false,
+	basicstyle=\scriptsize,
+	tabsize=1,
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{gray}, % the style that is used for the line-numbers
+	breaklines=true,	%automatischer Zeilenumbruch
+	prebreak =\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+	breakatwhitespace=false,
+	aboveskip={1.5\baselineskip},
+  	columns=fixed,
+  	upquote=true,
+  	extendedchars=true,
+  	backgroundcolor=\color[rgb]{0.97,0.97,0.97},
+}
+\begin{lstlisting}[caption={dialplan.xml},label=lst:dialplanxml]
+<DIALTEMPLATE>
+  <TEMPLATE MATCH="*" Timeout="5" />
+</DIALTEMPLATE>
+\end{lstlisting}    
+                
+Die folgende XML-Datei enthält alle wesentlichen Einstellungen für das Telefon, welches die mit dem Dateinamen korrespondierende MAC-Adresse hat:
+\begin{lstlisting}[caption={SEP\textbf{0012345678DE}.cnf.xml}, label=lst:cisco7961sep0012345678decnfxml]               
+<?xml version="1.0" encoding="UTF-8"?>
+<device>
+  <deviceProtocol>SIP</deviceProtocol>
+  <sshUserId>admin</sshUserId>
+  <sshPassword>1234</sshPassword>
+  <devicePool>
+    <dateTimeSetting>
+      <dateTemplate>D.M.YY</dateTemplate>
+      <timeZone>Central Europe Standard/Daylight Time</timeZone>
+	<ntps>
+	  <ntp>
+	    <name>192.168.1.1</name>
+	    <ntpMode>Unicast</ntpMode>
+	  </ntp>
+	</ntps>
+      </dateTimeSetting>
+      <callManagerGroup>
+	<members>
+	  <member priority="0">
+	    <callManager>
+	      <ports>
+		<ethernetPhonePort>2000</ethernetPhonePort>
+		<sipPort>5060</sipPort>
+		<securedSipPort>5061</securedSipPort>
+	      </ports>
+	    <processNodeName>192.168.1.80</processNodeName>
+	  </callManager>
+	</member>
+      </members>
+    </callManagerGroup>
+  </devicePool>
+  <commonProfile>
+    <phonePassword></phonePassword>
+    <backgroundImageAccess>true</backgroundImageAccess>
+    <callLogBlfEnabled>2</callLogBlfEnabled>
+  </commonProfile>
+  <loadInformation>SIP41.9-4-2SR1-1S</loadInformation>
+  <vendorConfig>
+     <disableSpeaker>false</disableSpeaker>
+     <disableSpeakerAndHeadset>false</disableSpeakerAndHeadset>
+     <pcPort>1</pcPort>
+     <settingsAccess>1</settingsAccess>
+     <garp>0</garp>
+     <voiceVlanAccess>0</voiceVlanAccess>
+     <videoCapability>0</videoCapability>
+     <autoSelectLineEnable>0</autoSelectLineEnable>
+     <sshAccess>0</sshAccess>
+     <sshPort>22</sshPort>
+     <webAccess>1</webAccess>
+     <spanToPCPort>1</spanToPCPort>
+     <loggingDisplay>1</loggingDisplay>
+     <loadServer></loadServer>
+     <daysDisplayNotActive></daysDisplayNotActive>
+     <displayOnTime>03:00</displayOnTime>
+     <displayOnDuration>00:01</displayOnDuration>
+     <displayIdleTimeout>00:05</displayIdleTimeout>
+     <displayOnWhenIncomingCall>1</displayOnWhenIncomingCall>
+  </vendorConfig>
+  <deviceSecurityMode>1</deviceSecurityMode>
+  <authenticationURL>http://192.168.1.80/ciscoauth.php</authenticationURL>
+  <directoryURL>http://192.168.1.80/directory.php</directoryURL>
+  <idleURL></idleURL>
+  <informationURL></informationURL>
+  <messagesURL></messagesURL>
+  <proxyServerURL></proxyServerURL>
+  <servicesURL></servicesURL>
+  <dscpForSCCPPhoneConfig>96</dscpForSCCPPhoneConfig>
+  <dscpForSCCPPhoneServices>0</dscpForSCCPPhoneServices>
+  <dscpForCm2Dvce>96</dscpForCm2Dvce>
+  <transportLayerProtocol>2</transportLayerProtocol>
+  <capfAuthMode>0</capfAuthMode>
+  <capfList>
+     <capf>
+        <phonePort>3804</phonePort>
+     </capf>
+  </capfList>
+  <certHash></certHash>
+  <encrConfig>false</encrConfig>
+   <sipProfile>
+     <sipProxies>
+        <backupProxy></backupProxy>
+        <backupProxyPort></backupProxyPort>
+        <emergencyProxy></emergencyProxy>
+        <emergencyProxyPort></emergencyProxyPort>
+        <outboundProxy></outboundProxy>
+        <outboundProxyPort></outboundProxyPort>
+        <registerWithProxy>true</registerWithProxy>
+     </sipProxies>
+     <sipCallFeatures>
+        <cnfJoinEnabled>true</cnfJoinEnabled>
+        <callForwardURI>x--serviceuri-cfwdall</callForwardURI>
+        <callPickupURI>x-cisco-serviceuri-pickup</callPickupURI>
+        <callPickupListURI>x-cisco-serviceuri-opickup</callPickupListURI>
+        <callPickupGroupURI>x-cisco-serviceuri-gpickup</callPickupGroupURI>
+        <meetMeServiceURI>x-cisco-serviceuri-meetme</meetMeServiceURI>
+        <abbreviatedDialURI>x-cisco-serviceuri-abbrdial</abbreviatedDialURI>
+        <rfc2543Hold>false</rfc2543Hold>
+        <callHoldRingback>2</callHoldRingback>
+        <localCfwdEnable>true</localCfwdEnable>
+        <semiAttendedTransfer>true</semiAttendedTransfer>
+        <anonymousCallBlock>2</anonymousCallBlock>
+        <callerIdBlocking>2</callerIdBlocking>
+        <dndControl>0</dndControl>
+        <remoteCcEnable>true</remoteCcEnable>
+     </sipCallFeatures>
+     <sipStack>
+        <sipInviteRetx>6</sipInviteRetx>
+        <sipRetx>10</sipRetx>
+        <timerInviteExpires>180</timerInviteExpires>
+        <timerRegisterExpires>3600</timerRegisterExpires>
+        <timerRegisterDelta>5</timerRegisterDelta>
+        <timerKeepAliveExpires>120</timerKeepAliveExpires>
+        <timerSubscribeExpires>120</timerSubscribeExpires>
+        <timerSubscribeDelta>5</timerSubscribeDelta>
+        <timerT1>500</timerT1>
+        <timerT2>4000</timerT2>
+        <maxRedirects>70</maxRedirects>
+        <remotePartyID>false</remotePartyID>
+        <userInfo>None</userInfo>
+     </sipStack>
+     <autoAnswerTimer>1</autoAnswerTimer>
+     <autoAnswerAltBehavior>false</autoAnswerAltBehavior>
+     <autoAnswerOverride>true</autoAnswerOverride>
+     <transferOnhookEnabled>false</transferOnhookEnabled>
+     <enableVad>false</enableVad>
+     <preferredCodec>g711alaw</preferredCodec>
+     <dtmfAvtPayload>101</dtmfAvtPayload>
+     <dtmfDbLevel>3</dtmfDbLevel>
+     <dtmfOutofBand>avt</dtmfOutofBand>
+     <alwaysUsePrimeLine>false</alwaysUsePrimeLine>
+     <alwaysUsePrimeLineVoiceMail>false</alwaysUsePrimeLineVoiceMail>
+     <kpml>3</kpml>
+     <natEnabled>false</natEnabled>
+     <natAddress></natAddress>
+     <stutterMsgWaiting>0</stutterMsgWaiting>
+     <callStats>false</callStats>
+     <silentPeriodBetweenCallWaitingBursts>10</silentPeriodBetweenCallWaitingBursts>
+     <disableLocalSpeedDialConfig>false</disableLocalSpeedDialConfig>
+     <startMediaPort>16384</startMediaPort>
+     <stopMediaPort>32766</stopMediaPort>
+     <voipControlPort>5060</voipControlPort>
+     <dscpForAudio>184</dscpForAudio>
+     <ringSettingBusyStationPolicy>0</ringSettingBusyStationPolicy>
+     <dialTemplate>dialplan.xml</dialTemplate>
+     <phoneLabel>Schlafzimmer</phoneLabel>
+     <sipLines>
+        <line button="1">
+           <featureID>9</featureID>
+           <featureLabel>623</featureLabel>
+           <name>623</name>
+           <displayName>623</displayName>
+           <contact>623</contact>
+           <proxy>USECALLMANAGER</proxy>
+           <port>5060</port>
+           <autoAnswer>
+              <autoAnswerEnabled>2</autoAnswerEnabled>
+           </autoAnswer>
+           <callWaiting>3</callWaiting>
+           <authName>624</authName>
+           <authPassword>1234</authPassword>
+           <sharedLine>false</sharedLine>
+           <messageWaitingLampPolicy>1</messageWaitingLampPolicy>
+           <messagesNumber>*97</messagesNumber>
+           <ringSettingIdle>4</ringSettingIdle>
+           <ringSettingActive>5</ringSettingActive>
+           <forwardCallInfoDisplay>
+              <callerName>true</callerName>
+              <callerNumber>true</callerNumber>
+              <redirectedNumber>false</redirectedNumber>
+              <dialedNumber>true</dialedNumber>
+           </forwardCallInfoDisplay>
+        </line>
+        <line button="2">
+           <featureID>2</featureID>
+           <featureLabel>Werkstatt</featureLabel>
+           <speedDialNumber>**622</speedDialNumber>
+        </line>
+        <line button="6">
+           <featureID>2</featureID>
+           <featureLabel>Mobilteile</featureLabel>
+           <speedDialNumber>**621</speedDialNumber>
+        </line>
+     </sipLines>
+  </sipProfile>
+</device>
+\end{lstlisting}
+
+Zum Schluss ergänzen wir die aus dem letzten Kapitel bekannte XMLDefault.cnf.xml um einen Eintrag, der allen anfragenden Cisco 7961 mitteilt welche Firmware sie laden sollen.
+Wenn du das Kapitel Cisco 7960 übersprungen hast kannst du diese Datei trotzdem wie nachfolgend gezeigt anlegen:
+
+\begin{lstlisting}[caption={XMLDefault.cnf.xml für Cisco 7960 und 7961 gültig}, label=lst:xmldefaultcnfcml79607961]    
+<Default>
+  <callManagerGroup>
+    <members>
+      <member priority="0">
+	<callManager>
+	  <ports>
+	    <ethernetPhonePort>2000</ethernetPhonePort>
+	      <mgcpPorts>
+		<listen>2427</listen>
+		<keepAlive>2428</keepAlive>
+	      </mgcpPorts>
+	    </ports>
+	    <processNodeName></processNodeName>
+	</callManager>
+      </member>
+    </members>
+  </callManagerGroup>
+  <loadInformation7  model="Cisco 7960">P0S3-8-12-00</loadInformation7>
+  <loadInformation30018  model="Cisco 7961">SIP41.9-4-2SR1-1S</loadInformation30018>
+  <loadInformation308  model="Cisco 7961G-GE">SIP41.9-4-2SR1-1S</loadInformation308>
+  <authenticationURL></authenticationURL>
+  <directoryURL></directoryURL>
+  <idleURL></idleURL>
+  <informationURL></informationURL>
+  <messagesURL></messagesURL>
+  <servicesURL></servicesURL>
+</Default>
+\end{lstlisting}
+
+Nachdem diese 3 Dateien erstellt wurden, sollten wir nun insgesamt diese Dateien alle in unserem Verzeichnis sehen:
+\begin{itemize}
+ \item apps41.9-4-2ES9.sbn  
+ \item cnu41.9-4-2ES9.sbn
+ \item cvm41sip.9-4-2ES9.sbn
+ \item dialplan.xml
+ \item dsp41.9-4-2ES9.sbn
+ \item jar41sip.9-4-2ES9.sbn
+ \item SEP\textbf{0012345678DE}.cnf.xml
+ \item SIP41.9-4-2SR1-1S.loads
+ \item term41.default.loads
+ \item term61.default.loads
+ \item XMLDefault.cnf.xml
+\end{itemize}
+Wenn dies der Fall ist, dann bitte im nächsten Kapitel fortfahren, sonst die letzten Schritte nochmal überprüfen !
+
+\subsubsection{Konfigurationsdateien und TFTP-Server für Cisco 7961 vorbereiten}
+Da wir den TFTP-Server ja im Kapitel für das Cisco 7960 vorbereitet haben, brauchen wir nun nur die Dateien in das Verzeichnes /srv/tftp/ des TFTP-Servers kopieren.
+Da über die XMLDefault.cnf.xml definiert ist, welche Telefonmodelle welche Firmware beziehen sollen, kann man problemlos die Firmwaredateien beider Telefonmodelle auf 
+dem TFTP-Server belassen. Leser, welche das Kapitel Cisco 7960 übersprungen haben, können bei Bedarf im Kapitel \textbf{Konfigurationsdateien und TFTP-Server für Cisco 7960 vorbereiten}
+nachlesen, wie man einen atftpd-Server unter Ubuntu so installiert und konfiguriert, das die Cisco's von dort die Firmwaredateien beziehen können.
+
+\subsubsection{Cisco 7961 updaten}
+Wie auch beim Cisco 7960 gehen wir nun beim Cisco 7961 vor um die derzeitig auf dem Gerät befindliche Firmware zu löschen und die neue SIP-Firmware zu installieren:
+
+\begin{itemize}
+ \item Cisco 7961 vom Strom trennen und kurz warten 
+ \item Cisco 7961 wieder mit STrom versorgen und direkt danach die Raute-Taste \# gedrückhalt, solange bis die Line-Tasten rechts neben dem Bildschirm anfangen zu blinken
+ \item nun \# Taste loslassen und nach einander die Tasten 1 2 3 4 5 6 7 8 9 * 0 \# drücken, Line-Tasten sollten innerhalb von 3 Sekunden aufhören zu blinken
+ \item \textbf{NUN ABWARTEN UND GEDULD HABEN} - das Telefon braucht (dank Java) ca. eine halbe Stunde um das Update durchzuführen und startet währenddessen mehrmals neu. 
+ \item wenn der Updatevorgang abgeschlossen ist, sollte sich das Telefon mit der FritzBox verbinden und benutzbar sein, d.h. abgehende und ankommende Anrufe intern und auch extern
+\end{itemize}
 
 \subsection{Cisco 7962}
-siehe Cisco 7961.
+Durch einen günstigen Zufall komme ich wohl in nächster Zeit noch an 2 Cisco 7962, dieses Kapitel wird dann ergänzt sobald ich die Teile erfolgreich in Betrieb genommen hab.
+
+\chapter{Schlusswort}
+Auch wenn die verwendete Technik ziemlich alt ist, bin ich mit dem Ergebnis sehr zufrieden, vom finanziellen Aufwand her wie auch von der Zuverlässigkeit und der Qualität. 
+Die Cisco Telefone beispielsweise haben eine sehr gute Verarbeitung und man merkt wirklich
+was Qualität ist. So hab ich zB noch keine so hochwertig klingende Freisprechfunktion erlebt wie bei der 796* Serie. Meiner Meinung nach nehmen sich die einzelnen Modelle der 796*er Serie auch nicht viel.
+Das 7960 hat 2 etwas nervige Nachteile: zum Einen ist der LCD-Bildschirm doch recht grobkörnig (stört mich weniger) und das 7960 unterstützt noch kein PoE nach 802.3af. Somit braucht
+man zur Energieversorgung entweder proprietäre Cisco PoE-Injektoren bzw. Cisco-Switches die das können, oder eben ein 48V-Netzteil - da hat man dann aber wieder 2 Kabel zum Telefon.
+Sonst bin ich mit dem Setup bis jetzt erstmal zufrieden. So kosmetische Details wie Klingeltöne, Hintergrundbilder etc. hab ich jetzt mal außen vor gelassen, dass kann jeder machen wie er/sie 
+Lust hat. 
 
 \end{document}
-
-
-
-

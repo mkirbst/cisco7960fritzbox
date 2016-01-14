@@ -1,16 +1,5 @@
 \documentclass[a4paper,12pt]{scrbook} 
-%%\documentclass[a4paper,12pt]{scrreprt} 
-%%\documentclass[a4paper,12pt]{scrartcl} 
 
-
-%Postanschrift Peter:
-%
-% Fujitsu Technology Solutions GmbH
-% Herr Colban
-% Wohlrabedamm 32
-% 13629 Berlin
-
-%%apt-get install texlive-lang-german kile kile-l10n  aspell-de%%damit ngerman keine Probleme mehr macht !!
 \usepackage[utf8]{inputenc} 
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
@@ -43,14 +32,6 @@
 
 \usepackage{fancyhdr, graphicx}	
 
-%%%%Wasserzeichen
-%\usepackage{draftwatermark}			% wasserzeichen
-%Quelle: http://choorucode.com/2010/05/05/latex-adding-draft-watermark/?like=1&source=post_flair&_wpnonce=1c9f85538d
-%\SetWatermarkText{VORABVERSION}		% wasserzeichen-text
-%\SetWatermarkLightness{0.9}			% wasserzeichen-kontrast
-%\SetWatermarkScale{2.5}				% wasserzeichen-zeichengroe\ss{}e
-
-%%%% mathemathische Formeln zentrieren und vom Text absetzenmittels \[ E = mc^2 \] anstatt $ E = mc^2 $ %%%%
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amsbsy}
@@ -59,17 +40,8 @@
 
 \usepackage{float} %% force image position by using big H: \begin{figure}[H]
 \usepackage{datetime} %% \today zusaetzlich mit uhrzeit
-%\usepackage{marginnote} %% Randnotizen, zB Bildlegende rechts auf den Rand
-%\usepackage{graphicx} 	%% Bilder in Textfluss einbetten
 
-%%%% print keyboard keys, source: http://tex.stackexchange.com/questions/5226/keyboard-font-for-latex
 \usepackage{menukeys}
-% use: 
-%You can visualize paths \directory{/home/moose/Desktop/manual.tex} or menus \menu{View > Highlight Mode > Markup > LaTeX} or 
-%key press combinations: \keys{\ctrl + \shift + F} is for formatting in Eclipse.
-%You can also visualize \keys{\tab}, \keys{\capslock}, \keys{\Space}, \keys{\arrowkeyup} and many more.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 \definecolor{Navy}{rgb}{0,0,0.5}
 \definecolor{Gray}{gray}{0.5}
@@ -78,10 +50,6 @@
 \definecolor{hellgrau2}{rgb}{0.93,0.93,0.93}
 \definecolor{listinggray}{gray}{0.9}
 \definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% print keyboard keys
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \hypersetup{
 	colorlinks=true, 			% false: boxed links; true: colored links
@@ -185,25 +153,6 @@ Am: & \today\\
 
 %\pagestyle{plain}
 \pagestyle{fancy}
-%\renewcommand{\headrulewidth}{1pt} %Linie oben
-%\fancyhf{}
-%\fancyhead[L]{\nouppercase{\leftmark}} %Kopfzeile links bzw. innen
-%\fancyhead[R]{\thepage} %Kopfzeile rechts bzw. außen
-
-%\pagestyle{fancy}
-%\fancyhead{}
-%\fancyfoot{}
-%\renewcommand{\chaptermark}[1]{\markboth{\slshape \thechapter. \ #1}{}}
-%\fancyhead[LO,LE]{\leftmark}
-%\fancyhead[RO,RE]{\pagemark}
-%\renewcommand{\headrulewidth}{0.4pt}
-%\renewcommand{\footrulewidth}{0pt}
-%\fancypagestyle{plain}{%
-%\fancyhf{}%
-%\fancyhead[RO,RE]{\thepage}
-%\renewcommand{\headrulewidth}{0pt}
-%\renewcommand{\footrulewidth}{0pt}}
-
 
 \pagestyle{fancy} 
 \fancyhf{}  % Kopf- und Fußzeile leeren 

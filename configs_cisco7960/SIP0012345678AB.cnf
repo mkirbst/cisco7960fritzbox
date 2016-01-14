@@ -1,0 +1,14 @@
+image_version: P0S3-8-12-00
+line1_name: 622
+line1_authname: "622"
+line1_shortname: "622" ; displayed on the phones softkey
+line1_password: "1234"
+line1_displayname: "622"; the caller id
+proxy1_port: 5060
+proxy1_address: 192.168.1.80
+# Phone Label (Text desired to be displayed in upper right corner)
+phone_label: "Werkstatt " ; add a space at the end, looks neater
+phone_password: "1234" ; Limited to 31 characters (Default - cisco)
+user_info: none
+telnet_level: 2
+logo_url: "http://192.168.1.203/cisco/asterisk-tux.bmp"

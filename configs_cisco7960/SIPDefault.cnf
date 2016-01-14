@@ -1,0 +1,15 @@
+image_version: P0S3-8-12-00
+proxy1_address: "192.168.1.80"   ; Can be dotted IP or FQDN
+proxy2_address: ""              ; Can be dotted IP or FQDN
+proxy3_address: ""              ; Can be dotted IP or FQDN
+proxy4_address: ""              ; Can be dotted IP or FQDN
+proxy5_address: ""              ; Can be dotted IP or FQDN
+proxy6_address: ""              ; Can be dotted IP or FQDN
+proxy_register: 1
+messages_uri:   "1"
+phone_password: "1234" ; Limited to 31 characters (Default - cisco)
+sntp_mode: unicast
+sntp_server: "192.168.1.1"
+time_zone: "CET" ; assuming you are in central europe
+time_format_24hr: 1 ; to show the time in 24hour format
+date_format: "D/M/Y"  ; format you would like the date in

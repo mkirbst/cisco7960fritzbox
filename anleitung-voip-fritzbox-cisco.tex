@@ -20,7 +20,7 @@
 
 
 %%HTWM-Vorlage - benoetigt apt-get install texlive-fonts-extra
-\setcounter{tocdepth}{1}				%Schatelungstiefe Inhaltsverz.
+\setcounter{tocdepth}{2}				%Schatelungstiefe Inhaltsverz.
 
 \usepackage[hyphens]{url} %lange URLs werden damit am Zeilenende umgebrochen
 \usepackage[utf8]{inputenc}			%deutsche Umlaute
@@ -108,7 +108,7 @@
 \begin{titlepage}
 
 \begin{center}
-{\huge\bfseries VoIP-Setup: Telekom AllIP + FritzBox + Cisco 7960/7961/7962 Systemtelefone\par}
+{\huge\bfseries VoIP-Setup: FritzBox 7240 am Telekom AllIP-DSL mit Cisco 7960/7961/7962 Systemtelefonen verheiraten\par}
 \vskip 1cm
 \textbf{Beispielkonfiguration}
 \end{center}
@@ -118,7 +118,6 @@
 \flushleft
 \begin{tabular}{rl}
 Von: & marcel\\ 
-%Matrikelnr.: & 59246\\
 Am: & \today\\
 \end{tabular}
 \end{titlepage}
@@ -127,10 +126,11 @@ Am: & \today\\
 \tableofcontents
 
 %Abbildungsverzeichnis und Tabellenverzeichnis auf einer Seite
-\clearpage
+%%\clearpage
 \listoffigures
 
-\listoftables
+
+%%\listoftables	%% tabellnverzeichnis
 
 %% 											\renewcommand{\lstlistlistingname}{Quellcodeverzeichnis}
 \lstlistoflistings
@@ -250,6 +250,11 @@ Die Lösung Igel+pfSense setze ich jetzt seit Jahren ein und mein Fazit ist bish
 Weiterer wichtiger Punkt: die komplette Konfiguration lässt sich als XML-Datei exportieren.
 
 \section{VoIP-Server}
+Als VoIP-Server kann man prinzipiell neben Fertigprodukten wie beispielsweise von AVM oder Lancom auch selbst VoIP-Installationen aufsetzen.
+Es gibt hierzu diverse Distributionen auf Basis von Asterisk wie beispielsweise die Distributionen AsteriskNow oder FreePBX. Aber das schien mir
+für meine privaten Zwecke dann doch Overkill. Außerdem möchte ich da keinen großen Wartungsaufwand bei der Telefonanlage.
+
+\subsection{Fritzbox 7240 als VoIP-Server}
 Bei einem Bekannten konnte ich eine AVM FritzBox 7240 vor der Verschrottung retten, an der nach einem Gewitter das DSL-Modem sowie 
 WLAN ausgefallen waren. Die FritzBox wird so konfiguriert das sie eine lokale IP-Adresse aus dem LAN erhält und das Internet über den
 IGEL-Router mit benutzt. Am Igel sind die relevanten Ports für VoIP an die FritzBox weitergeleitet. Dazu später mehr.
@@ -265,6 +270,16 @@ skeptisch ob der SCCP-Firmware, habe ich das Ding erstanden. Da es nach etwas Ge
 verstanden hat, ist es trivial eine fast beliebige Anzahl weiterer solcher Modelle in Betrtieb zu nehmen. 
 
 \chapter{Konfiguration}
+In unserem Szenario haben wir folgende Geräte:
+\begin{itemize}
+ \item[IP 192.168.1.1]  IGEL-Router stell Internetverbindung her und dient als DHCP-Server
+ \item[IP 192.168.1.80] FritzBox als interner VoIP-Server
+ \item[IP 192.168.1.91] Nexus 5 als VoIP Client mit interner Rufnummer 620 und Passwort 1234
+ \item[IP 192.168.1.81] Siemens S685IP als VoIP Client mit interner Rufnummer 621 und Passwort 1234
+ \item[IP 192.168.1.82] Cisco 7960 als VoIP Client mit interner Rufnummer 622 und Passwort 1234
+ \item[IP 192.168.1.83] Cisco 7961 als VoIP Client mit interner Rufnummer 623 und Passwort 1234
+\end{itemize}
+
 \section{Router}
 Am Router selbst ist nichts zu beachten, solange eine zuverlässige Internetverbindung besteht und die passenden Ports zum VoIP-Server durchgereicht werden.
 Das sind in meinem Fall folgende Ports:
@@ -277,19 +292,18 @@ Das sind in meinem Fall folgende Ports:
 
 Diese muss man per NAT zur lokalen IP-Adresse des VoIP-Servers durchreichen.
 
-
 Falls man pfSense einsetzt, sollte man beim erstellen der Portregeln darauf achten, dass man 
 unten bei ''filter rule association`` die Standardvorgabe in ''pass`` umändert. Weiterhin sollte man sich
 dieses Dokument \footnote{\url{https://doc.pfsense.org/index.php/VoIP_Configuration}} verinnerlichen, da
 beispielsweise mit der standardmäßig aktivierten Option ''source port randomization`` kein stabiler VoIP-Betrieb 
 zu machen ist.
 
-
 \section{VoIP-Server}
 Am VoIP-Server, also der FritzBox gibt es nun zwei Bereiche die man abarbeiten muss. Ein Teil ist die Registrierung der externen SIP-Nummern,
 die man von seinem Anbieter zur Verfügung gestellt bekommen hat. In meinem Fall handelt es sich um 3 SIP-Nummern an einem AllIP-Anschluss der Telekom.
 Der zweite Bereich ist die Konfiguration der FritzBox als SIP-Server für die internen SIP-Telefone.
 
+Netter Nebeneffekt wenn man die FritzBox als VoIP-Server verwendet: falls man ein GMail-Konto hat, kann man seine Kontakte vom GMail-Konto direkt in die FritzBox importieren.
 \subsection{Externe SIP-Accounts}
 Hier hat man mit der FritzBox und dem mitgelieferten Assistenten wirklich leichtes Spiel. Man klickt sich durch den Telefonieassistenten, indem man seinen 
 VoIP-Anbieter auswählt und noch die passenden Zugangsdaten einträgt. Danach sollte die FritzBox die SIP-Nummern porblemlos registrieren können. 

@@ -111,6 +111,19 @@
 {\huge\bfseries VoIP-Setup: FritzBox 7240 am Telekom AllIP-DSL mit Cisco 7960/7961/7962 Systemtelefonen verheiraten\par}
 \vskip 1cm
 \textbf{Beispielkonfiguration}
+
+WARNUNG: Ich bin nicht verantwortlich wenn ihr bei dem Versuch das nachzustellen eure Hardware in Briefbeschwerer verwandelt. Ich
+beschreibe hier nur nach bestem Wissen und Gewissen, wie es bei mir geklappt hat. Wie immer gilt:\\
+
+
+\textbf{Gehirn einschalten, nachmachen auf eigene Gefahr !!}\\
+
+
+HINWEIS ZU FIRMWARE-/BIOS UPDATES IM ALLGEMEINEN: Bei einem Firmware-/BIOS-Update die Geduld zu verlieren und den Stecker zu ziehen,
+weil sich mal 10 Minuten nichts regt, ist der sicherste Weg eure Hardware kaputt zu machen ! Im Zweifel über Nacht stehen lassen, wenn
+sich bis zum nächsten Morgen immernoch nichts getan hat, kann man immernoch neustarten. Beispielsweise laufen die Cisco 7961 mit Java und
+brauchen locker mal eine halbe Stunde, wenn man die SIP-Firmware updatet. 
+
 \end{center}
  
  \vfill
@@ -206,7 +219,19 @@ Am: & \today\\
 \chapter{Einleitung}
 \label{sec:0}
 Dieses Dokument beschreibt mein privates Telefoniesetup zu Hause. Da es mich ein wenig Zeit gekostet hat die einzelnen Komponenten
-so zum Zusammenspiel zu bewegen, möchte ich den Weg hiermit dokumentieren
+so zum Zusammenspiel zu bewegen, möchte ich den Weg hiermit dokumentieren.
+
+WARNUNG: Ich bin nicht verantwortlich wenn ihr bei dem Versuch das nachzustellen eure Hardware in Briefbeschwerer verwandelt. Ich
+beschreibe hier nur nach bestem Wissen und Gewissen, wie es bei mir geklappt hat. Wie immer gilt: 
+
+
+\textbf{Gehirn einschalten, nachmachen auf eigene Gefahr !!}
+
+
+HINWEIS ZU FIRMWARE-/BIOS UPDATES IM ALLGEMEINEN: Bei einem Firmware-/BIOS-Update die Geduld zu verlieren und den Stecker zu ziehen,
+weil sich mal 10 Minuten nichts regt, ist der sicherste Weg eure Hardware kaputt zu machen ! Im Zweifel über Nacht stehen lassen, wenn
+sich bis zum nächsten Morgen immernoch nichts getan hat, kann man immernoch neustarten. Beispielsweise laufen die Cisco 7961 mit Java und
+brauchen locker mal eine halbe Stunde, wenn man die SIP-Firmware updatet. 
 
 \chapter{Hardware}
 \label{sec:1}
@@ -271,14 +296,15 @@ verstanden hat, ist es trivial eine fast beliebige Anzahl weiterer solcher Model
 
 \chapter{Konfiguration}
 In unserem Szenario haben wir folgende Geräte:
-\begin{itemize}
+\begin{description}
  \item[IP 192.168.1.1]  IGEL-Router stell Internetverbindung her und dient als DHCP-Server
+ \item[IP 192.168.1.2]  TFTP-Server der die Firmware- und Konfigurationsdateien vorhält (bei mir: Ubuntu mit atftpd)
  \item[IP 192.168.1.80] FritzBox als interner VoIP-Server
  \item[IP 192.168.1.91] Nexus 5 als VoIP Client mit interner Rufnummer 620 und Passwort 1234
  \item[IP 192.168.1.81] Siemens S685IP als VoIP Client mit interner Rufnummer 621 und Passwort 1234
  \item[IP 192.168.1.82] Cisco 7960 als VoIP Client mit interner Rufnummer 622 und Passwort 1234
  \item[IP 192.168.1.83] Cisco 7961 als VoIP Client mit interner Rufnummer 623 und Passwort 1234
-\end{itemize}
+\end{description}
 
 \section{Router}
 Am Router selbst ist nichts zu beachten, solange eine zuverlässige Internetverbindung besteht und die passenden Ports zum VoIP-Server durchgereicht werden.
@@ -290,7 +316,7 @@ Das sind in meinem Fall folgende Ports:
  \item POrts 40000 bis 41000 UDP
 \end{itemize}
 
-Diese muss man per NAT zur lokalen IP-Adresse des VoIP-Servers durchreichen.
+Diese Ports muss man per NAT zur lokalen IP-Adresse des VoIP-Servers durchreichen.
 
 Falls man pfSense einsetzt, sollte man beim erstellen der Portregeln darauf achten, dass man 
 unten bei ''filter rule association`` die Standardvorgabe in ''pass`` umändert. Weiterhin sollte man sich
@@ -569,11 +595,11 @@ auf dem IGEL-Router als DHCP-Option die IP-Adresse des TFTP-Servers angegeben. M
 eine IP-Adresse für den TFTP-Server angeben, dass hab ich jedoch selbst nicht ausprobiert.
 
 \subsubsection{Cisco 7960 updaten}
-Da nun alles vorbereitet ist holen wir zum Radikalschlag aus: Wir müssen die Firmware des Telefons komplett platt machen. In Folge dessen wersucht das
+Da nun alles vorbereitet ist holen wir zum Radikalschlag aus: Wir müssen die Firmware des Telefons komplett platt machen. In Folge dessen versucht das
 Telefon dann per TFTP eine neue Firmware und Konfiguration vom angegebenen TFTP-Server zu laden und bekommt diesmal die SIP-Firmware untergeschoben.
 
 Um den Firmware-Reset durchzuführen müssen wir das 7960 vom Strom trennen. Dann wird der Strom wieder verbunden und direkt danach die Rautetaste \# gedrückt gehalten.
-Wir halten \# solange gedrückt, bis die drei Tasten rechts unten abwechselnd anfangen zu blinken. Indem wir jetzt die Tasten 1 2 3 4 5 6 7 8 9 * 0 \# drücken starten wir den
+Wir halten \# solange gedrückt, bis die drei Tasten rechts unten abwechselnd anfangen zu blinken. Indem wir jetzt nacheinander die Tasten 1 2 3 4 5 6 7 8 9 * 0 \# drücken starten wir den
 Firmwarereset mit anschließendem Update. Zur Fehlerdiagnose sollte man die LOG-Datei des TFTP-Servers beobachten. Ich hatte anfangs das Problem, das das Telefon die IP des TFTP-Servers
 nicht übernommen hat und somit die Dateien nicht laden konnte. 
 

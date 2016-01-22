@@ -1,0 +1,29 @@
+<Default>
+  <callManagerGroup>
+    <members>
+      <member priority="0">
+	<callManager>
+	  <ports>
+	    <ethernetPhonePort>2000</ethernetPhonePort>
+	    <mgcpPorts>
+	      <listen>2427</listen>
+	      <keepAlive>2428</keepAlive>
+	    </mgcpPorts>
+	  </ports>
+	<processNodeName></processNodeName>
+      </callManager>
+    </member>
+  </members>
+  </callManagerGroup>
+  <loadInformation7  model="Cisco 7960">P0S3-8-12-00</loadInformation7>
+  <loadInformation30018  model="Cisco 7961">SIP41.9-4-2SR1-1S</loadInformation30018>
+  <loadInformation308  model="Cisco 7961G-GE">SIP41.9-4-2SR1-1S</loadInformation308>
+  <loadInformation30018  model="Cisco 7962">SIP42.9-4-2SR1-1S</loadInformation30018> 
+  <loadInformation308  model="Cisco 7962G-GE">SIP42.9-4-2SR1-1S</loadInformation308> 
+  <authenticationURL></authenticationURL>
+  <directoryURL></directoryURL>
+  <idleURL></idleURL>
+  <informationURL></informationURL>
+  <messagesURL></messagesURL>
+  <servicesURL></servicesURL>
+</Default>

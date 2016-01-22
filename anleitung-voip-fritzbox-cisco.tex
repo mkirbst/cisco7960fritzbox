@@ -75,31 +75,32 @@
 
 \begin{titlepage}
 
+\begin{figure}[H]
 \begin{center}
-{\huge\bfseries VoIP-Setup: FritzBox 7240 am Telekom AllIP-DSL mit Cisco 7960 und 7961 Systemtelefonen verheiraten\par}
+\includegraphics[width=.7\hsize]{./images/ciscoupdate.jpg}
+\end{center}
+\end{figure}
+
+
+\begin{center}
+{\huge\bfseries VoIP-Setup: FritzBox 7240 am Telekom AllIP-DSL mit Cisco 7960,7961,7962 Systemtelefonen verheiraten\par}
 \vskip 1cm
 \textbf{Beispielkonfiguration}
 
 WARNUNG: Ich bin nicht verantwortlich wenn ihr bei dem Versuch das nachzustellen eure Hardware in Briefbeschwerer verwandelt. Ich
 beschreibe hier nur nach bestem Wissen und Gewissen, wie es bei mir geklappt hat. Wie immer gilt:\\
-
-
 \textbf{Gehirn einschalten, nachmachen auf eigene Gefahr !!}\\
-
-
 HINWEIS ZU FIRMWARE-/BIOS UPDATES IM ALLGEMEINEN: Bei einem Firmware-/BIOS-Update die Geduld zu verlieren und den Stecker zu ziehen,
 weil sich mal 10 Minuten nichts regt, ist der sicherste Weg eure Hardware kaputt zu machen ! Im Zweifel über Nacht stehen lassen, wenn
 sich bis zum nächsten Morgen immernoch nichts getan hat, kann man immernoch neustarten. Beispielsweise laufen die Cisco 7961 mit Java und
 brauchen locker mal eine halbe Stunde, wenn man die SIP-Firmware updatet. 
-
-\end{center}
- 
- \vfill
-\vskip 3cm
+\end{center} 
+\vfill
+%%\vskip 3cm
 \flushleft
 \begin{tabular}{rl}
 Autor: & marcel\\ 
-Version: & v0.1\\
+Version: & v0.2\\
 Am: & \today\\
 HINWEIS: &Fast alles in dieser Anleitung stammt aus dem Netz, ich hab es nur so\\ &zusammengefummelt, das es für mich funktioniert.\\
 \end{tabular}
@@ -183,6 +184,7 @@ HINWEIS ZU FIRMWARE-/BIOS UPDATES IM ALLGEMEINEN: Bei einem Firmware-/BIOS-Updat
 weil sich mal 10 Minuten nichts regt, ist der sicherste Weg eure Hardware kaputt zu machen ! Im Zweifel über Nacht stehen lassen, wenn
 sich bis zum nächsten Morgen immernoch nichts getan hat, kann man immernoch neustarten. Beispielsweise laufen die Cisco 7961 mit Java und
 brauchen locker mal eine halbe Stunde, wenn man die SIP-Firmware updatet. 
+
 
 \chapter{Hardware}
 \label{sec:1}
@@ -640,7 +642,8 @@ Zusätzlich legen wir jetzt noch die folgenden Dateien an:
 </DIALTEMPLATE>
 \end{lstlisting}    
                 
-Die folgende XML-Datei enthält alle wesentlichen Einstellungen für das Telefon, welches die mit dem Dateinamen korrespondierende MAC-Adresse hat:
+Die folgende XML-Datei enthält alle wesentlichen Einstellungen für das Telefon, welches die mit dem Dateinamen korrespondierende MAC-Adresse hat. Unter anderem wird in dieser Datei
+auch der Telefonname in Zeile 145 festgelegt, hierbei keine Leerzeichen verwenden, da das Telefon sonst die gesamte Konfigurationsdatei verwirft und in den Status ''unprovisioniert über geht``.
 \begin{lstlisting}[caption={SEP\textbf{0012345678DE}.cnf.xml}, label=lst:cisco7961sep0012345678decnfxml]               
 <?xml version="1.0" encoding="UTF-8"?>
 <device>
@@ -896,7 +899,63 @@ Wie auch beim Cisco 7960 gehen wir nun beim Cisco 7961 vor um die derzeitig auf 
 \end{itemize}
 
 \subsection{Cisco 7962}
-Durch einen günstigen Zufall komme ich wohl in nächster Zeit noch an 2 Cisco 7962, dieses Kapitel wird dann ergänzt sobald ich die Teile erfolgreich in Betrieb genommen hab.
+Über das Auktionshaus meiner Wahl bin ich noch an 5 gebrauchte Cisco 7962 gekommen. Die 7962 scheinen im Gegensatz zu den Vorgängern jedoch von einem ärgerlichen Problem betroffen zu sein:
+ich habe bei 4 von 5 der 7962 das Problem, dass diese nicht korrekt booten. Sobald man diese mit Energie versorgt, beginnt die Freisprechtaste grün zu leuchten und das wars.
+An diesem Zustand ändert sich auch nach Stunden nichts. Alles was ich im Internet dazu gefunden habe, ist der Hinweis bei Cisco einen RMA-Fall zu eröffnen, was für mich als Gebrauchtwarenkäufer
+natürlich nicht möglich ist. Bisher habe ich noch keine Möglichkeit gefunden das Problem zu fixen. Empfehlung: Modelle der Serien 79*1 oder 79*0 kaufen, falls möglich.
+
+Das einzige 7962 mit intakten Bootloader konnten ich mit einem Vorgehen analog zum 7961 integrieren.
+
+\subsubsection{Konfigurationsdateien und TFTP-Server für Cisco 7962 vorbereiten}
+Da wir den TFTP-Server ja im Kapitel für das Cisco 7960 vorbereitet haben, brauchen wir nun nur die SIP-Firmware-Dateien in das Verzeichnes /srv/tftp/ des TFTP-Servers kopieren.
+Da über die XMLDefault.cnf.xml definiert ist, welche Telefonmodelle welche Firmware beziehen sollen, kann man problemlos die Firmwaredateien der verschiedenen Telefonmodelle auf 
+dem TFTP-Server belassen. Leser, welche das Kapitel Cisco 7960 übersprungen haben, können bei Bedarf im Kapitel \textbf{Konfigurationsdateien und TFTP-Server für Cisco 7960 vorbereiten}
+nachlesen, wie man einen atftpd-Server unter Ubuntu so installiert und konfiguriert, das die Cisco's von dort die Firmwaredateien beziehen können. Die aktuelle SIP-Firmware für 7962 Telefone
+kann man mit einem kostenlosen Account unter \footnote{\url{http://www.cisco.com/c/en/us/td/docs/voice\_ip\_comm/cuipph/7900\_series/firmware/9\_4\_2SR2/english/releasenotes/P790\_BK\_C7078DFD\_00\_cisco-unified-ip-phone-7900.html}} als Zip-Datei mit dem Namen \textbf{cmterm-7942\_7962-sip.9-4-2SR1-1.zip} runterladen.
+
+Die XMLDefault.cnf.xml sieht für ein gemischtes Setup aus 7960, 7961 und 7962 so aus:
+\begin{lstlisting}[caption={XMLDefault.cnf.xml für Cisco 7960, 7961 und 7962 gültig}, label=lst:xmldefaultcnfcml796079617962]    
+<Default>
+  <callManagerGroup>
+    <members>
+      <member priority="0">
+	<callManager>
+	  <ports>
+	    <ethernetPhonePort>2000</ethernetPhonePort>
+	      <mgcpPorts>
+		<listen>2427</listen>
+		<keepAlive>2428</keepAlive>
+	      </mgcpPorts>
+	    </ports>
+	    <processNodeName></processNodeName>
+	</callManager>
+      </member>
+    </members>
+  </callManagerGroup>
+  <loadInformation7  model="Cisco 7960">P0S3-8-12-00</loadInformation7>
+  <loadInformation30018  model="Cisco 7961">SIP41.9-4-2SR1-1S</loadInformation30018>
+  <loadInformation308  model="Cisco 7961G-GE">SIP41.9-4-2SR1-1S</loadInformation308>
+  <loadInformation30018  model="Cisco 7962">SIP42.9-4-2SR1-1S</loadInformation30018> 
+  <loadInformation308  model="Cisco 7962G-GE">SIP42.9-4-2SR1-1S</loadInformation308> 
+  <authenticationURL></authenticationURL>
+  <directoryURL></directoryURL>
+  <idleURL></idleURL>
+  <informationURL></informationURL>
+  <messagesURL></messagesURL>
+  <servicesURL></servicesURL>
+</Default>
+\end{lstlisting}
+
+Die SEP<mac-adresse>.xml kann von der Vorlage für die 7961 Telefone übernommen werden. Am Ende sieht das Datenverzeichnis meines TFTP-Servers so aus, damit sowohl 7960, wie auch 
+7961 und 7962 provisioniert werden können:
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=1\hsize]{./images/atftpd-cisco7960-7961-7962.png}
+\end{center}
+\caption[TFTP-Server Datenverzeichnis für ein vollständiges 7960/7961/7962 Deployment.]
+{\label{atftpd-7960-7961-7962}TFTP-Server Datenverzeichnis für ein vollständiges 7960/7961/7962 Deployment. Quelle: Autor}
+\end{figure}
 
 \chapter{Schlusswort}
 Auch wenn die verwendete Technik ziemlich alt ist, bin ich mit dem Ergebnis sehr zufrieden, vom finanziellen Aufwand her wie auch von der Zuverlässigkeit und der Qualität. 
@@ -905,6 +964,7 @@ was Qualität ist. So hab ich zB noch keine so hochwertig klingende Freisprechfu
 Das 7960 hat 2 etwas nervige Nachteile: zum Einen ist der LCD-Bildschirm doch recht grobkörnig (stört mich weniger) und das 7960 unterstützt noch kein PoE nach 802.3af. Somit braucht
 man zur Energieversorgung entweder proprietäre Cisco PoE-Injektoren bzw. Cisco-Switches die das können, oder eben ein 48V-Netzteil - da hat man dann aber wieder 2 Kabel zum Telefon.
 Sonst bin ich mit dem Setup bis jetzt erstmal zufrieden. So kosmetische Details wie Klingeltöne, Hintergrundbilder etc. hab ich jetzt mal außen vor gelassen, dass kann jeder machen wie er/sie 
-Lust hat. 
+Lust hat. Von Erwerb gebrauchter 7962 ohne Garantie rate ich derzeit ab, da man nicht weiss ob man Geräte mit intaktem Bootloader erhält. 7962-Telefone mit korruptem Bootloader kann man nach meinem
+derzeitigen Kenntnisstand nur als Ersatzteilspender verwenden. 
 
 \end{document}
